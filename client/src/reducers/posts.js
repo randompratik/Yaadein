@@ -1,14 +1,5 @@
 export default (posts = [], action) => {
-  switch (action.type) {
-    case "FETCH-ALL":
-      return posts;
-      break;
-    case "CREATE":
-      return posts;
-      break;
-
-    default:
-      return posts;
-      break;
-  }
+  if (action.type === "FETCH-ALL") return posts;
+  else if (action.type === "CREATE") return posts;
+  else return posts;
 };
