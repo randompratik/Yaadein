@@ -1,0 +1,2 @@
+-->npm init -y  ::It allows to dodge all the questionare that is done when npm init is run
+-->
