@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useStyle from "./styles";
 import { Typography, TextField, Button, Paper } from "@material-ui/core";
-import FileBase64 from "react-file-base64";
-import {useDispatch} from 'react-redux';
-import {createPost} from '../../actions/posts';
-const Form = () => {
+import FileBase from "react-file-base64";
+import { useDispatch ,useSelector} from 'react-redux';
+import { createPost ,updatePost} from '../../actions/posts';
+const Form = ({ currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
         creator: "",
         title: "",
@@ -13,13 +13,37 @@ const Form = () => {
         selectedFile: "",
     });
     const classes = useStyle();
-      const dispatch = useDispatch();
-    const handleSubmit = (e) => { 
-        e.preventDefault();
-        dispatch(createPost(postData));
-    };
 
-    const clear = () => { };
+    const post=useSelector(state=>currentId?state.posts.find((p)=>p._id===currentId):null);
+
+    const dispatch = useDispatch();
+
+       useEffect(()=>{
+           if(post)
+           setPostData(post);
+       },[post])
+
+       const clear = () => {
+        setCurrentId(0);
+        setPostData({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
+      };
+      
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (currentId){
+            dispatch(updatePost(currentId, postData));
+            clear();
+        }
+        else{
+            dispatch(createPost(postData));
+            clear();
+        }
+         
+            
+    };
+     
+
     return (
         <Paper className={classes.paper}>
             <form
@@ -66,7 +90,7 @@ const Form = () => {
                     onChange={(e) => setPostData({ ...postData, tags: e.target.value })}
                 />
                 <div className={classes.fileInput}>
-                    <FileBase64
+                    <FileBase
                         type="file"
                         multiple={false}
                         onDone={({ base64 }) =>
