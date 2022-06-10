@@ -7,6 +7,8 @@ export default (posts = [], action) => {
 
   else if(action.type==="DELETE") return posts.filter(post=> post._id !== action.payload);
 
+  else if(action.type==="LIKE") return posts.map((post)=> post._id===action.payload._id?action.payload:post);
+
   else return posts;
 
 };
