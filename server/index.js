@@ -13,7 +13,7 @@ app.use(cors());
 app.use("/posts", postRoutes);
 
 const CONNECTION_URL =
-  "mongodb+srv://partik7110:pratik7110@cluster0.4uptp.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://partik7110:pratik7110@cluster0.4uptp.mongodb.net/test?retryWrites=true&w=majority";
 
 const PORT = process.env.PORT || 5000;
 
@@ -26,4 +26,4 @@ mongoose
   .then(() => app.listen(PORT, () => console.log(`listening on port: ${PORT}`)))
   .catch((error) => console.log(error.message));
 
-// mongoose.set('useFindAndModify',false);
+// mongoose.set('useFindAndModify',false)
