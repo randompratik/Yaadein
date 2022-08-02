@@ -2,47 +2,55 @@ import React, { useState, useEffect } from "react";
 import useStyle from "./styles";
 import { Typography, TextField, Button, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
-import { useDispatch ,useSelector} from 'react-redux';
-import { createPost ,updatePost} from '../../actions/posts';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPost, updatePost } from '../../actions/posts';
 const Form = ({ currentId, setCurrentId }) => {
     const [postData, setPostData] = useState({
-        creator: "",
         title: "",
         message: "",
-        tags: "",
         selectedFile: "",
     });
+    const user = JSON.parse(localStorage.getItem('profile'));
     const classes = useStyle();
 
-    const post=useSelector(state=>currentId?state.posts.find((p)=>p._id===currentId):null);
+    const post = useSelector(state => currentId ? state.posts.find((p) => p._id === currentId) : null);
 
     const dispatch = useDispatch();
 
-       useEffect(()=>{
-           if(post)
-           setPostData(post);
-       },[post])
+    useEffect(() => {
+        if (post)
+            setPostData(post);
+    }, [post])
 
-       const clear = () => {
+    const clear = () => {
         setCurrentId(0);
-        setPostData({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
-      };
-      
+        setPostData({ title: '', message: '', selectedFile: '' });
+    };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (currentId){
-            dispatch(updatePost(currentId, postData));
+        if (currentId) {
+            dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
             clear();
         }
-        else{
-            dispatch(createPost(postData));
+        else {
+            dispatch(createPost({ ...postData, name: user?.result?.name }));
             clear();
         }
-         
-            
+
     };
-     
+
+    if (!user?.result?.name) {
+        return (
+            <Paper className={classes.paper}>
+                <Typography variant="h6" align="center">
+                    Please Sign In to create your own memories and like other's memories.
+                </Typography>
+            </Paper>
+        );
+    }
+
 
     return (
         <Paper className={classes.paper}>
@@ -52,8 +60,8 @@ const Form = ({ currentId, setCurrentId }) => {
                 className={`${classes.root} ${classes.form}`}
                 onSubmit={handleSubmit}
             >
-                <Typography variant="h6">{currentId?'Editing':'Create'} a Memory</Typography>
-                <TextField
+                <Typography variant="h6">{currentId ? 'Editing' : 'Create'} a Memory</Typography>
+                {/* <TextField
                     name="creator"
                     variant="outlined"
                     label="Creator"
@@ -62,7 +70,7 @@ const Form = ({ currentId, setCurrentId }) => {
                     onChange={(e) =>
                         setPostData({ ...postData, creator: e.target.value })
                     }
-                />
+                /> */}
                 <TextField
                     name="title"
                     variant="outlined"
@@ -81,7 +89,7 @@ const Form = ({ currentId, setCurrentId }) => {
                         setPostData({ ...postData, message: e.target.value })
                     }
                 />
-               
+
                 <div className={classes.fileInput}>
                     <FileBase
                         type="file"

@@ -1,5 +1,5 @@
 import React, {useState , useEffect} from "react";
-import { AppBar, Typography, Avatar, Toolbar, Button } from "@material-ui/core";
+import { AppBar, Typography, Toolbar, Button ,Avatar } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import {useHistory} from "react-router-dom";
 import Style from "./styles";
@@ -13,7 +13,7 @@ const location =useLocation();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     useEffect(()=>{
        setUser(JSON.parse(localStorage.getItem('profile')));
-    },[location,user]);
+    },[location]);
   
     const dispatch=useDispatch();
     const history=useHistory();
@@ -43,36 +43,14 @@ const logout=()=>{
         />
       </div>
       <Toolbar className={classes.toolbar}>
-        {user ? (
+        {user?.result ? (
           <div className={classes.profile}>
-            <Avatar
-              className={classes.purple}
-              alt={user.result.name}
-              source={user.result.imageURL}
-            >
-              {user.result.name.charAt(0)}
-            </Avatar>
-            <Typography className={classes.userName} variant="h6">
-              {user.result.name}
-            </Typography>
-            <Button
-              className={classes.logout}
-              variant="contained"
-              color="secondary"
-              onClick={logout}
-            >
-              Logout
-            </Button>
+            <Avatar className={classes.purple} alt={user?.result.name} src={user?.result.imageUrl}>{user?.result.name.charAt(0)}</Avatar>
+            <Typography className={classes.userName} variant="h6">{user?.result.name}</Typography>
+            <Button variant="contained" className={classes.logout} color="secondary" onClick={logout}>Logout</Button>
           </div>
         ) : (
-          <Button
-            component={Link}
-            to="/auth"
-            variant="contained"
-            color="primary"
-          >
-            Sign In
-          </Button>
+          <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
         )}
       </Toolbar>
     </AppBar>

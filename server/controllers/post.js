@@ -13,14 +13,15 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
   const post = req.body;
-  const newPost = new postMessage(post);
+  const newPostMessage = new postMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() })
 
   try {
-    await newPost.save();
+    await newPostMessage.save();
+    res.status(201).json(newPostMessage );
   } catch (error) {
     res.status(404).json({ message: error.message })
   }
-  res.send('creating a post');
+  
 };
 
 
@@ -68,7 +69,7 @@ export const likePost = async (req, res) => {
 
   const updatedPost = await postMessage.findByIdAndUpdate(id, post, { new: true });
 
-  res.json(updatedPost);
+  res.status(200).json(updatedPost);
 
 };  
 

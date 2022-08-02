@@ -12,7 +12,7 @@ const Auth = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [isSignup, setIsSignup] = useState(false)
 
-    const initialState={firstName:'',lasrName:'',email:'',password:'',confirmPassword:''};
+    const initialState={firstName:'',lastName:'',email:'',password:'',confirmPassword:''};
     const [formData, setFormData]=useState(initialState);
     
     const dispatch=useDispatch();
@@ -25,6 +25,7 @@ const Auth = () => {
             }
             else
             dispatch(signin(formData,history))
+               
 
     };
     const handleChange = (e) => {
@@ -49,7 +50,7 @@ const Auth = () => {
                         {isSignup && (
                             <>
                                 <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
-                                <Input name="LastName" label="Last Name" handleChange={handleChange} half />
+                                <Input name="lastName" label="Last Name" handleChange={handleChange} half />
                             </>
                         )}
                         <Input name="email" label="Email address" handleChange={handleChange} type="email" />

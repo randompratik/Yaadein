@@ -6,7 +6,7 @@ const authReducer=(state={authData:null}, action)=>{
     }
     else if(action.type==="LOGOUT"){
         localStorage.clear();
-        return {...state,authData:null};
+        return { ...state, authData: null, loading: false, errors: null };
 
     }
     else
