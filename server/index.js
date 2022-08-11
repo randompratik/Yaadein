@@ -16,7 +16,7 @@ app.use("/user", userRoutes);
 
 
 const CONNECTION_URL =
-  "mongodb+srv://partik7110:pratik7110@cluster0.4uptp.mongodb.net/yaadein?retryWrites=true&w=majority";
+  "mongodb+srv://partik7110:pratik7110@cluster0.4uptp.mongodb.net/test?retryWrites=true&w=majority";
 
 const PORT = process.env.PORT || 5000;
 
